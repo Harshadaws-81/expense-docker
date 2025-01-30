@@ -1,0 +1,24 @@
+version: "3"
+networks:
+  expense:
+volumes:
+  mysql:  # docker volume create mysql
+services:
+  mysql:  # docker run 
+    image: awsdevopsharsha/mysql:v1
+    container_name: mysql  # --name mysql
+    volumes:
+    - mysql: /var/lib/mysql  # -v mysql: /var/lib/mysql
+  backend:
+    image: awsdevopsharsha/backend:v1
+    container_name: backend
+    command: sh -c "sleep 9 && node /apt/server/index.js"
+    depends_on:
+    - mysql
+  frontend:
+    image: awsdevopsharsha/frontend:v1
+    container_name: frontend
+    ports: 
+      - 80:80
+    depends_on:
+    - backend
